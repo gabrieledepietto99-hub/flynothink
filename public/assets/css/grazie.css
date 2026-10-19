@@ -1,0 +1,46 @@
+/* =========================================================================
+   FlyNoThink — /grazie (anteprima dimostrativa)
+   ========================================================================= */
+
+@layer base {
+  .back { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(243,241,236,.25); color: #F3F1EC; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-size: 15px; transition: background-color .25s, border-color .25s; }
+  .back:hover { background: rgba(243,241,236,.08); border-color: rgba(243,241,236,.5); color: #F3F1EC; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    .ty path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.8s cubic-bezier(.45,0,.2,1) forwards; }
+    .in { animation: rise .9s cubic-bezier(.2,.7,.2,1) both; }
+  }
+}
+
+/* Pagina /grazie: classi estratte 1:1 dagli stili del prototipo V3.2 approvato.
+   Non in @layer: mantengono la stessa precedenza che avevano come stili inline. */
+
+/* --- grazie --- */
+.grazie-1{position:relative;min-height:100vh;box-sizing:border-box;background:#0C0D0E;color:#F3F1EC;font-family:'Geist', system-ui, sans-serif;overflow:hidden;display:flex;flex-direction:column;padding:0 clamp(20px, 5vw, 64px)}
+.grazie-2{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.grazie-3{position:absolute;right:-18%;top:-10%;width:80%;height:130%;fill:none;stroke:#6CC3BB;stroke-width:1.1;opacity:.28}
+.grazie-4{animation-delay:0s}
+.grazie-5{animation-delay:.2s}
+.grazie-6{animation-delay:.4s}
+.grazie-7{animation-delay:.6s}
+.grazie-8{animation-delay:.8s}
+.grazie-9{position:relative;width:100%;max-width:1200px;margin:0 auto;height:88px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.grazie-10{display:flex;align-items:center;gap:14px;color:#F3F1EC}
+.grazie-11{fill:currentColor;display:block}
+.grazie-12{font-family:'Space Grotesk', sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#E9A08F}
+.grazie-13{position:relative;flex:1;width:100%;max-width:1200px;margin:0 auto;display:flex;align-items:center;padding:clamp(48px, 8vw, 96px) 0}
+.grazie-14{max-width:680px}
+.grazie-15{width:56px;height:56px;border-radius:50%;border:1px solid rgba(108,195,187,.5);display:flex;align-items:center;justify-content:center;color:#6CC3BB}
+.grazie-16{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.grazie-17{margin:32px 0 0;font-family:'Space Grotesk', sans-serif;font-weight:500;font-size:clamp(42px, 6.4vw, 92px);line-height:1;letter-spacing:-.035em;animation-delay:.1s}
+.grazie-18{font-family:'Instrument Serif', serif;font-style:italic;font-weight:400;color:#6CC3BB;letter-spacing:-.01em}
+.grazie-19{margin:32px 0 0;font-family:'Space Grotesk', sans-serif;font-size:clamp(19px, 1.8vw, 22px);line-height:1.4;animation-delay:.2s}
+.grazie-20{margin:16px 0 0;font-size:17px;line-height:1.6;color:#A9ACA8;animation-delay:.3s}
+.grazie-21{margin:28px 0 0;display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#D9D6CF;animation-delay:.35s}
+.grazie-22{flex:none;margin-top:2px;width:22px;height:22px;border-radius:50%;border:1px solid rgba(108,195,187,.5);color:#6CC3BB;font-family:'Space Grotesk', sans-serif;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+.grazie-23{color:#E9A08F}
+.grazie-24{margin:28px 0 0;padding:16px 20px;border-left:2px solid #E2674F;background:rgba(243,241,236,.04);border-radius:0 12px 12px 0;font-size:15px;color:#D9D6CF;animation-delay:.4s}
+.grazie-25{margin-top:44px;animation-delay:.5s}
+.grazie-26{position:relative;width:100%;max-width:1200px;margin:0 auto;padding:24px 0 32px;border-top:1px solid rgba(243,241,236,.1);font-size:13px;color:#7E8280}

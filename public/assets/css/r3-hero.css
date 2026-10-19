@@ -1,0 +1,131 @@
+/* FNT · R3 — Hero B «Immersive Photographic Hero» con la fotografia F01 approvata.
+   Caricato dopo landing.css e motion.css: estende la R2 senza modificarne i file.
+
+   ≥ 1280 px  foto a tutta larghezza, inquadratura intera 16:9: il soggetto è già nel terzo destro,
+              una sfumatura a sinistra crea lo spazio negativo per il titolo. Nessun ritaglio.
+   901–1279   la foto diventa un pannello a destra (60%) che sfuma nel nero: il titolo non tocca mai il volto.
+   601–900    foto in alto a tutta larghezza (16:9 intera), testo sotto nell'ordine R2.
+   ≤ 600 px   ritaglio mobile in alto (volto + guanti interi), testo subito sotto; CTA nella prima schermata.
+              Sui display bassi (≤ 720 px di altezza) il testo sale sulla parte bassa, già scura, della foto. */
+
+.hx-b-wrap {
+  --hx-pos-d: 68% 40%;
+  --hx-pos-m: 50% 0%;
+  --hx-ratio-d: 1672 / 941;
+  --hx-ratio-m: 1 / 1;
+  --hx-ph-h: calc(100vw / (var(--hx-ratio-m)));
+  --hx-overlap: 40px;
+  position: relative;
+  margin: 0 calc(-1 * clamp(20px, 5vw, 64px));
+  padding: 0 clamp(20px, 5vw, 64px);
+  min-height: min(calc(100vh - 88px), 820px);
+  display: flex; align-items: center;
+  background: #0C0D0E;
+}
+.hx-bg { position: absolute; inset: 0; margin: 0; overflow: hidden; }
+.hx-bg picture, .hx-bg img { display: block; width: 100%; height: 100%; }
+.hx-bg img { object-fit: cover; object-position: var(--hx-pos-d); }
+.hx-bg::after { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(12,13,14,.94) 0%, rgba(12,13,14,.9) 30%, rgba(12,13,14,.62) 44%, rgba(12,13,14,.12) 58%, rgba(12,13,14,0) 66%),
+    linear-gradient(0deg, #0C0D0E 0%, rgba(12,13,14,0) 20%),
+    linear-gradient(180deg, rgba(12,13,14,.5) 0%, rgba(12,13,14,0) 14%); }
+.hx-b { position: relative; z-index: 5; width: 100%; }
+.hx-b .hero-2 { max-width: 620px; }
+.hx-cap { position: absolute; right: 0; bottom: 28px; margin: 0; z-index: 5; }
+.hx .hero-3 { background: rgba(12,13,14,.72); }
+
+/* Segnaposto (solo senza foto integrata: marcato data-placeholder, blocca la pubblicazione) */
+.hx-ph { position: absolute; inset: 0; background: linear-gradient(160deg, #2B3838, #1B2324 48%, #101314); }
+.hx-ph-tag { position: absolute; z-index: 4; right: 16px; top: 16px; padding: 6px 10px; border-radius: 8px;
+  border: 1px dashed rgba(233,160,143,.7); background: rgba(12,13,14,.78); color: #E9A08F;
+  font: 600 11px/1.2 'Space Grotesk', sans-serif; letter-spacing: .12em; }
+
+/* ---------- 901–1279: pannello a destra ---------- */
+@media (min-width: 901px) and (max-width: 1279px) {
+  .hx-bg { left: auto; width: 60%; }
+  .hx-bg img { object-position: 86% 40%; }
+  .hx-bg::after { background:
+    linear-gradient(90deg, #0C0D0E 0%, rgba(12,13,14,.7) 14%, rgba(12,13,14,.2) 30%, rgba(12,13,14,0) 42%),
+    linear-gradient(0deg, #0C0D0E 0%, rgba(12,13,14,0) 20%),
+    linear-gradient(180deg, rgba(12,13,14,.5) 0%, rgba(12,13,14,0) 14%); }
+  .hx-b .hero-2 { max-width: 44%; }
+}
+
+/* ---------- 601–900: foto sopra, testo sotto ---------- */
+@media (min-width: 601px) and (max-width: 900px) {
+  .hx-b-wrap { display: block; min-height: 0; --hx-ph-h: calc(100vw / (var(--hx-ratio-d))); }
+  .hx-bg { inset: 0 0 auto 0; height: var(--hx-ph-h); }
+  .hx-bg::after { background:
+    linear-gradient(0deg, #0C0D0E 0%, rgba(12,13,14,.6) 14%, rgba(12,13,14,0) 32%),
+    linear-gradient(180deg, rgba(12,13,14,.45) 0%, rgba(12,13,14,0) 14%); }
+  .hx { padding-top: calc(var(--hx-ph-h) - 32px); }
+  .hx-cap { position: static; margin-top: 18px; }
+}
+
+/* ---------- ≤ 600: mobile ---------- */
+@media (max-width: 600px) {
+  .hx-b-wrap { display: block; min-height: 0; }
+  .hx-bg { inset: 0 0 auto 0; height: var(--hx-ph-h); }
+  .hx-bg img { object-position: var(--hx-pos-m); }
+  .hx-bg::after { background:
+    linear-gradient(0deg, #0C0D0E 0%, rgba(12,13,14,.55) 10%, rgba(12,13,14,0) 24%),
+    linear-gradient(180deg, rgba(12,13,14,.45) 0%, rgba(12,13,14,0) 14%); }
+  .hx-ph-tag { right: auto; left: 12px; top: 12px; }
+
+  /* Ordine visivo approvato: badge → titolo → sottotitolo → CTA → testo → meta.
+     L'ordine HTML (lettura e tastiera) resta quello della R2. */
+  .hx .hero-2 { display: contents; }
+  .hx { display: flex; flex-direction: column; flex-wrap: nowrap; gap: 0; align-items: stretch;
+        padding-top: calc(var(--hx-ph-h) - var(--hx-overlap)); }
+  .hx .hero-3 { order: 1; margin-bottom: 20px; align-self: flex-start; }
+  .hx .hero-5 { order: 2; }
+  .hx .hero-7 { order: 3; margin-top: 18px; }
+  .hx .hero-9 { order: 4; margin-top: 24px; }
+  .hx .hero-8 { order: 5; margin-top: 28px; }
+  .hx .hero-14 { order: 6; }
+  .hx .hx-cap { order: 7; position: static; margin-top: 18px; }
+}
+/* Display bassi (≤ 720 px di altezza): inquadratura intera 16:9 al posto del ritaglio mobile.
+   Volto e guanti restano entrambi visibili e il testo non copre la foto; il soggetto è più piccolo. */
+@media (max-width: 600px) and (max-height: 720px) {
+  .hx-b-wrap { --hx-ph-h: calc(100vw / (var(--hx-ratio-d))); --hx-overlap: 14px; }
+  .hx-bg img { object-position: 60% 50%; }
+  .hx-bg::after { background:
+    linear-gradient(0deg, #0C0D0E 0%, rgba(12,13,14,0) 16%),
+    linear-gradient(180deg, rgba(12,13,14,.4) 0%, rgba(12,13,14,0) 14%); }
+  .hx .hero-3 { margin-bottom: 14px; }
+  .hx .hero-7 { margin-top: 12px; }
+  .hx .hero-9 { margin-top: 18px; }
+}
+
+/* 320 × 568 e simili: header più basso, foto 16:9 rifilata solo nel cielo sopra i capelli,
+   titolo e sottotitolo leggermente ridotti. Volto e guanti restano interi, la CTA entra nella prima schermata. */
+@media (max-width: 360px) and (max-height: 600px) {
+  .nav-2 { height: 64px; }
+  .hx-b-wrap { --hx-ph-h: calc(100vw / 1.9); }
+  .hx-bg img { object-position: 60% 100%; }
+  .hx .hero-3 { margin-bottom: 10px; }
+  .hx .hero-5 { font-size: 40px; }
+  .hx .hero-7 { margin-top: 10px; font-size: 18px; line-height: 1.3; }
+  .hx .hero-9 { margin-top: 14px; }
+}
+
+/* Dichiarazione AI sulla foto: discreta e leggibile; testo semplice (non è un link, per non anticipare la CTA
+   nell'ordine di tastiera). La nota completa è nel footer (#nota-immagini). */
+.hx-ai { position: absolute; z-index: 6; right: clamp(20px, 5vw, 64px); bottom: 14px; padding: 4px 8px; border-radius: 6px;
+  background: rgba(12,13,14,.72); color: #C9CCC8; font: 500 11px/1.3 'Space Grotesk', sans-serif; letter-spacing: .02em;
+  margin: 0; pointer-events: none; }
+.hx-ai-short { display: none; }
+@media (max-width: 900px) { .hx-ai { top: 10px; bottom: auto; left: 12px; right: auto; } }
+@media (max-width: 600px) { .hx-ai-long { display: none; } .hx-ai-short { display: inline; } }
+.footer-ai { margin-top: 10px; }
+
+/* ---------- Motion (stesso schema R2: solo con .m e senza movimento ridotto) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  /* «Esposizione»: la foto emerge dal buio mentre arriva il titolo */
+  .m .hx-bg img { animation: hx-expose 1.8s var(--m-ease) .05s both; }
+  .m .hx-cap { animation: m-fade 1s ease 1.4s both; }
+}
+@keyframes hx-expose { from { opacity: 0; scale: 1.06; } to { opacity: 1; scale: 1; } }
+@media print { .hx-bg img { animation: none !important; opacity: 1 !important; scale: 1 !important; } }

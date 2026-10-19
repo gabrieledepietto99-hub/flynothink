@@ -1,0 +1,23 @@
+/* FNT · R3 — link ai documenti legali nel footer e pagine «in preparazione». */
+.footer-legal { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 4px 24px; margin-top: 4px; }
+.footer-legal a { display: inline-flex; align-items: center; min-height: 44px; color: #D9D6CF; font-family: 'Space Grotesk', sans-serif; font-size: 14px;
+  text-decoration: underline; text-decoration-color: rgba(217,214,207,.35); text-underline-offset: 4px; }
+.footer-legal a:hover { color: #F3F1EC; text-decoration-color: currentColor; }
+.footer-legal a:focus-visible { outline: 2px solid #6CC3BB; outline-offset: 3px; border-radius: 4px; }
+.footer-legal a[aria-current="page"] { color: #6CC3BB; }
+
+.legal-1 { min-height: 100vh; background: #0C0D0E; color: #F3F1EC; font-family: 'Geist', system-ui, sans-serif; padding: 0 clamp(20px, 5vw, 64px); }
+.legal-2 { max-width: 760px; margin: 0 auto; padding: 48px 0 64px; }
+.legal-back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #D9D6CF; font-family: 'Space Grotesk', sans-serif; font-size: 14px; }
+.legal-back:focus-visible { outline: 2px solid #6CC3BB; outline-offset: 3px; border-radius: 4px; }
+.legal-1 h1 { margin: 40px 0 0; font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: clamp(36px, 6vw, 64px); line-height: 1.02; letter-spacing: -.03em; }
+.legal-stato { margin: 28px 0 0; padding: 18px 20px; border-left: 2px solid #E9A08F; background: #17191B; border-radius: 0 12px 12px 0; color: #D9D6CF; font-size: 16px; line-height: 1.6; }
+.legal-1 .footer-legal { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(243,241,236,.12); }
+
+/* Pulsante «Preferenze cookie»: stesso aspetto dei link legali */
+.footer-prefs { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: none; cursor: pointer;
+  color: #D9D6CF; font-family: 'Space Grotesk', sans-serif; font-size: 14px;
+  text-decoration: underline; text-decoration-color: rgba(217,214,207,.35); text-underline-offset: 4px; }
+.footer-prefs:hover { color: #F3F1EC; text-decoration-color: currentColor; }
+.footer-prefs:focus-visible { outline: 2px solid #6CC3BB; outline-offset: 3px; border-radius: 4px; }
+.footer-prefs-note { flex-basis: 100%; color: #A9ACA8; }

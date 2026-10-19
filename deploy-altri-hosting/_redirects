@@ -1,0 +1,3 @@
+# Netlify / Cloudflare Pages: un solo indirizzo principale
+https://www.flynothink.it/*  https://flynothink.it/:splat  301!
+/grazie  /grazie.html  200

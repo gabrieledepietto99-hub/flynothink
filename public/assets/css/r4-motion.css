@@ -1,0 +1,36 @@
+/* FNT · R4 — movimento «Apple»: tende sui titoli, Hero che si allontana allo scorrimento,
+   frasi-manifesto che si accendono parola per parola. Stesso schema della R2: tutto vive sotto .m
+   e prefers-reduced-motion: no-preference. Senza JS o con movimento ridotto la pagina è statica e completa. */
+
+.ruolo-1, .incontri-1, .persone-1 { --sec-bg: #F3F1EC; }
+.mappa-1 { --sec-bg: #EAE7E0; }
+.proposta-1, .modulo-1 { --sec-bg: #0C0D0E; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Tenda verticale: il titolo emerge dal basso mentre la tenda si ritira verso l'alto */
+  .m :is(.storia-3, .proposta-3, .incontri-3, .mappa-4, .persone-2, .modulo-5) { position: relative; }
+  .m :is(.storia-3, .proposta-3, .incontri-3, .mappa-4, .persone-2, .modulo-5)::after {
+    content: ''; position: absolute; inset: -0.08em -0.04em; background: var(--sec-bg, #F3F1EC);
+    transform-origin: 50% 0; scale: 1 1; pointer-events: none;
+    transition: scale 1.15s var(--m-ease) calc(var(--m-d, 0s) + .12s);
+  }
+  .m :is(.storia-3, .proposta-3, .incontri-3, .mappa-4, .persone-2, .modulo-5).is-in::after { scale: 1 0; }
+  .m :is(.storia-3, .proposta-3, .incontri-3, .mappa-4, .persone-2, .modulo-5):focus-within::after { display: none; }
+
+  /* Hero: allo scorrimento la foto si avvicina appena e il testo sale più veloce e si dissolve (solo transform/opacity) */
+  .m .hx-bg picture { transform: scale(calc(1 + var(--hs, 0) * .07)); transform-origin: 62% 40%; will-change: transform; }
+  .m .hx-b { transform: translateY(calc(var(--hs, 0) * -64px)); opacity: calc(1 - var(--hs, 0) * .55); }
+
+  /* Parole che si accendono */
+  .m [data-words] .w { opacity: .16; transition: opacity .35s ease; }
+  .m [data-words] .w.on { opacity: 1; }
+  .m [data-words]:focus-within .w { opacity: 1; }
+
+  /* Microinterazioni: la freccia della CTA anticipa il movimento */
+  .btn .arr { transition: translate .35s var(--m-ease); }
+  .btn:hover .arr { translate: 0 3px; }
+}
+@media print {
+  .m :is(.storia-3, .proposta-3, .incontri-3, .mappa-4, .persone-2, .modulo-5)::after { display: none !important; }
+  [data-words] .w { opacity: 1 !important; }
+}

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /grazie
+Disallow: /grazie.html
+
+Sitemap: https://flynothink.it/sitemap.xml

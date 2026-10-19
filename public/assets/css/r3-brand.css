@@ -1,0 +1,10 @@
+/* FNT · marchio solo testuale. «FNT» in Archivo Expanded 800 corsivo (sottoinsieme di 3 lettere, 848 byte, licenza OFL),
+   «flynothink» in Space Grotesk. Nessun simbolo grafico. */
+@font-face { font-family: 'FNT Display'; src: url('../fonts/archivo-expanded-800-italic-FNT.woff2') format('woff2');
+  font-weight: 800; font-style: italic; font-display: swap; unicode-range: U+0046, U+004E, U+0054; }
+.nav-3, .brand-text { display: inline-flex; align-items: center; gap: 12px; color: #F3F1EC; text-decoration: none; margin: 0; }
+.brand-fnt { font-family: 'FNT Display', 'Space Grotesk', sans-serif; font-weight: 800; font-style: italic; font-size: 19px; letter-spacing: .01em; line-height: 1; }
+.brand-sep { width: 1px; height: 18px; background: rgba(243,241,236,.28); }
+.brand-word { font-family: 'Space Grotesk', sans-serif; font-weight: 400; font-size: 17px; letter-spacing: .01em; line-height: 1; color: #D9D6CF; }
+.legal-brand { margin-bottom: 28px; }
+@media (max-width: 360px) { .nav-3 .brand-sep, .nav-3 .brand-word { display: none; } }

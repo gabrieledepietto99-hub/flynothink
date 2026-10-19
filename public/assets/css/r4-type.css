@@ -1,0 +1,68 @@
+/* FNT · R4 — tipografia «Apple × Nike».
+   Titoli: Archivo condensato (600–900, sottoinsieme latino, 19 KB, licenza OFL) in maiuscolo, stretti e potenti (Nike).
+   Accenti: Instrument Serif corsivo, minuscolo, invariato (eleganza editoriale).
+   Testi: Space Grotesk invariato. Grandi frasi-manifesto in Space Grotesk, che si accendono parola per parola allo scorrimento (Apple).
+   Nessun testo cambia: solo la resa. */
+@font-face {
+  font-family: 'FNT Condensed';
+  src: url('../fonts/archivo-condensed-600-900.woff2') format('woff2');
+  font-weight: 600 900; font-style: normal; font-display: swap;
+}
+
+:root { --display: 'FNT Condensed', 'Arial Narrow', 'Space Grotesk', sans-serif; }
+
+/* ---------- Titoli ---------- */
+.hero-5, .ruolo-4, .storia-3, .proposta-3, .incontri-3, .mappa-4, .persone-2, .modulo-5, .faq-3 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  line-height: .9;
+  font-kerning: normal;
+}
+/* L'accento in corsivo resta minuscolo e leggermente più grande per pareggiare l'altezza delle maiuscole */
+.hero-6, .storia-4, .proposta-4, .incontri-4, .mappa-5, .persone-3 {
+  text-transform: none;
+  font-size: 1.06em;
+  letter-spacing: -0.015em;
+  line-height: .95;
+}
+
+.hero-5 { font-size: clamp(50px, min(8.6vw, 11.5vh), 136px); line-height: .88; }  /* anche in altezza: la CTA resta nella prima schermata */
+.ruolo-4 { font-size: clamp(50px, 8vw, 128px); line-height: .9; }
+.storia-3 { font-size: clamp(42px, 5.6vw, 84px); }
+.proposta-3 { font-size: clamp(48px, 7.4vw, 116px); }
+.incontri-3 { font-size: clamp(42px, 5.6vw, 84px); }
+.mappa-4 { font-size: clamp(40px, 5vw, 72px); }
+.persone-2 { font-size: clamp(36px, 4.6vw, 68px); line-height: .94; }
+.modulo-5 { font-size: clamp(42px, 5.6vw, 84px); }
+.faq-3 { font-size: clamp(34px, 3.8vw, 52px); }
+
+/* Numeri grandi in stile sportivo */
+.incontri-9 { font-family: var(--display); font-weight: 800; font-size: 64px; letter-spacing: -0.01em; line-height: .9; }
+.ruolo-8 { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: .02em; }
+
+/* ---------- Frasi-manifesto ---------- */
+.proposta-6 { font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: clamp(28px, 3.6vw, 52px); line-height: 1.12; letter-spacing: -0.025em; }
+.storia-6 { font-size: clamp(24px, 2.6vw, 36px); line-height: 1.15; letter-spacing: -0.02em; }
+
+/* Occhielli: più tecnici, più spaziati */
+.ruolo-3 { font-weight: 600; letter-spacing: .2em; }
+
+/* ---------- Mobile: il titolo della Hero non deve spingere la CTA fuori dalla prima schermata ---------- */
+@media (max-width: 600px) {
+  .hero-5 { font-size: clamp(48px, 14.6vw, 60px); line-height: .9; }
+  .incontri-9 { font-size: 52px; }
+}
+@media (max-width: 360px) and (max-height: 600px) {
+  .hx .hero-5 { font-size: 42px; }
+}
+
+/* Campo trappola anti-spam: fuori schermo per le persone, visibile ai bot */
+.hp { position: absolute !important; left: -10000px !important; width: 1px; height: 1px; overflow: hidden; }
+
+/* Titoli lunghi: l'accento corsivo va a capo, più piccolo, per non spezzare male le righe */
+.incontri-4 { display: block; font-size: .74em; margin-top: .1em; }
+.persone-3 { display: block; font-size: .86em; margin-top: .12em; }
+@media (min-width: 901px) and (max-width: 1279px) { .hero-5 { font-size: clamp(50px, min(7vw, 9.5vh), 96px); } }

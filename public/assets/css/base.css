@@ -1,0 +1,65 @@
+/* =========================================================================
+   FlyNoThink — base condivisa (landing + /grazie)
+   Font ospitati in locale: nessuna richiesta a Google Fonts (privacy, stabilità).
+   Licenze: assets/fonts/LICENSE-*.txt (SIL Open Font License 1.1).
+   ========================================================================= */
+
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url(../fonts/space-grotesk-latin-wght-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(../fonts/geist-latin-wght-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../fonts/instrument-serif-latin-400-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../fonts/instrument-serif-latin-400-italic.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Le regole di base stanno in un cascade layer: le classi di componente (non in layer)
+   hanno la precedenza, come gli stili inline del prototipo approvato. */
+@layer base {
+  [hidden] { display: none !important; }
+
+  body { margin: 0; background: #0C0D0E; }
+
+  a { color: inherit; }
+  a:hover { color: inherit; }
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 2px solid #6CC3BB; outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
+  /* Salta al contenuto */
+  .skip { position: absolute; left: 16px; top: -80px; z-index: 100; display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: #F3F1EC; color: #0C0D0E; font: 500 15px/1 'Space Grotesk', sans-serif; text-decoration: none; }
+  .skip:focus { top: 16px; color: #0C0D0E; outline: 2px solid #6CC3BB; outline-offset: 3px; }
+  @media (prefers-reduced-motion: no-preference) { .skip { transition: top .2s; } }
+  main:focus { outline: none; }
+
+  /* AVVISO DI ANTEPRIMA — da rimuovere solo quando tutti i requisiti di pubblicazione sono chiusi
+     (lo verifica scripts/check-publish.mjs). */
+  .preview-banner { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; padding: 10px clamp(20px, 5vw, 64px); background: #FBE9E4; color: #7A2E1F; font: 400 13px/1.45 'Geist', system-ui, sans-serif; border-bottom: 1px solid #E9C4B9; }
+  .preview-banner strong { font: 600 12px/1.45 'Space Grotesk', sans-serif; letter-spacing: .12em; }
+}

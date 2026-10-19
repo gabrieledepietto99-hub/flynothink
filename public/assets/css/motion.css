@@ -1,0 +1,304 @@
+/* ==========================================================================
+   FNT · R2 — Cinematic Motion System
+   Un solo sistema per tutta la pagina. Regole:
+   · si anima solo transform (translate/scale), opacity, clip-path e il tratto SVG;
+   · lo stato iniziale nascosto esiste solo con la classe .m sull'<html>
+     (impostata nel <head> solo se c'è IntersectionObserver e non c'è movimento ridotto)
+     e solo dentro @media (prefers-reduced-motion: no-preference);
+   · senza JavaScript, con movimento ridotto o in stampa la pagina è statica e completa;
+   · le scene sono attivate da assets/js/motion.js (classe .is-in, una sola volta).
+   Specifica completa: R2_MOTION_SPEC.md
+   ========================================================================== */
+
+:root {
+  --m-ease: cubic-bezier(.16, 1, .3, 1);       /* uscita lunga e morbida: ingressi */
+  --m-ease-io: cubic-bezier(.65, 0, .35, 1);   /* simmetrica: linee che si disegnano */
+  --m-spring: cubic-bezier(.34, 1.56, .64, 1); /* leggero rimbalzo: punti che "arrivano" */
+  --m-dist: 32px;
+}
+@media (max-width: 600px) { :root { --m-dist: 18px; } }
+
+@keyframes m-rise    { from { opacity: 0; translate: 0 var(--m-dist); } to { opacity: 1; translate: 0 0; } }
+@keyframes m-fade    { from { opacity: 0; } to { opacity: 1; } }
+@keyframes m-ambient { from { opacity: 0; scale: .8; } to { opacity: 1; scale: 1; } }
+@keyframes m-nudge   { 0%, 100% { translate: 0 0; } 25% { translate: -4px 0; } 50% { translate: 3px 0; } 75% { translate: -2px 0; } }
+
+/* --------------------------------------------------------------------------
+   Luce ambientale e nuovi segni grafici (statici: visibili anche senza motion)
+   -------------------------------------------------------------------------- */
+.hero-1 { position: relative; isolation: isolate; }
+.hero-1::before {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+  right: -6%; top: -4%; width: 64%; height: 108%;
+  background: radial-gradient(closest-side, rgba(108,195,187,.15), rgba(108,195,187,.05) 55%, rgba(108,195,187,0) 100%);
+  translate: calc(var(--mx, 0) * 28px) calc(var(--my, 0) * 20px);
+}
+@media (max-width: 900px) { .hero-1::before { right: -30%; top: -6%; width: 130%; height: 58%; } }
+
+.proposta-1 { position: relative; overflow: clip; }
+.proposta-1 > .ruolo-2 { position: relative; }
+.proposta-1::before {
+  content: ''; position: absolute; pointer-events: none;
+  right: -12%; top: -8%; width: 70%; height: 72%;
+  background: radial-gradient(closest-side, rgba(108,195,187,.13), rgba(108,195,187,0));
+}
+.listen {
+  position: absolute; pointer-events: none; top: clamp(24px, 6vw, 80px); right: -4%;
+  width: min(620px, 52vw); height: auto; fill: none; stroke: #6CC3BB; stroke-width: 1.2; opacity: .32;
+}
+@media (max-width: 600px) { .listen { width: 86vw; right: -30%; top: 12px; opacity: .22; } }
+
+.m-step { position: relative; }
+.step-glyph {
+  position: absolute; top: 18px; right: 0; width: 44px; height: 44px; overflow: visible;
+  fill: none; stroke: #1E6B66; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+}
+.step-glyph .g-core { fill: #1E6B66; stroke: none; }
+/* Tablet: colonne strette, il glifo sta sopra la linea (nello spazio sotto il titolo) */
+@media (min-width: 601px) and (max-width: 960px) { .step-glyph { top: -46px; width: 36px; height: 36px; } }
+.g-comprensione circle { fill: #F3F1EC; }
+
+.grid-scenes, .proposta-5, .ref-quote { position: relative; }
+
+/* Etichetta del campo attivo: cambio di colore, nessun movimento (vale anche con movimento ridotto) */
+.modulo-17 div:focus-within > .modulo-19 { color: #1E6B66; }
+
+/* --------------------------------------------------------------------------
+   Microinterazioni (con e senza .m, mai con movimento ridotto)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .btn { transition: background-color .25s ease, color .25s ease, box-shadow .3s ease, translate .35s var(--m-ease), scale .15s ease; }
+  .btn:not(:disabled):hover { translate: 0 -2px; }
+  .btn-dark:not(:disabled):hover { box-shadow: 0 14px 30px -14px rgba(12,13,14,.6); }
+  .btn:not(:disabled):active { scale: .98; translate: 0 0; transition-duration: .08s; }
+  .field { transition: border-color .2s ease, box-shadow .35s var(--m-ease); }
+  .field:focus { box-shadow: 0 0 0 8px rgba(30,107,102,.12); }
+  .field[aria-invalid="true"] { animation: m-nudge .42s ease both; }
+  .field-error:not([hidden]) { animation: m-fade .35s ease both; }
+  [data-demo-panel]:not([hidden]) { animation: m-rise .7s var(--m-ease) both; }
+  .faq details[open] .faq-6 { animation: m-rise .5s var(--m-ease) both; }
+}
+
+/* ==========================================================================
+   SCENE (solo con .m e senza movimento ridotto)
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+
+  /* ---- Ingresso generico degli elementi (un solo gesto: sale e appare) ---- */
+  .m :is(.reveal, .ref-body > :not(.ref-bio), .ref-bio > p, .ref-facts, .modulo-3 > *, .modulo-14):not(.grid-scenes, .ruolo-10, .storia-7, .proposta-5, .chain, .m-step, .mock, .mappa-6, .ref-card, .ruolo-4) {
+    transition: opacity .9s ease var(--m-d, 0s), translate 1.1s var(--m-ease) var(--m-d, 0s);
+  }
+  .m :is(.reveal, .ref-body > :not(.ref-bio), .ref-bio > p, .ref-facts, .modulo-3 > *, .modulo-14):not(.grid-scenes, .ruolo-10, .storia-7, .proposta-5, .chain, .m-step, .mock, .mappa-6, .ref-card, .ruolo-4):not(.is-in) {
+    opacity: 0; translate: 0 var(--m-dist);
+  }
+  /* L'accento corsivo dei titoli arriva dopo il titolo */
+  .m :is(h2.reveal, .modulo-5) > span { transition: opacity 1.1s ease calc(var(--m-d, 0s) + .35s); }
+  .m :is(h2.reveal:not(.is-in), .modulo-3 > .modulo-5:not(.is-in)) > span { opacity: 0; }
+
+  /* ---- SCENA 01 · Hero: sequenza al primo disegno, senza attendere JavaScript ---- */
+  .m .nav-2 { animation: m-fade .8s ease both; }
+  .m .hero-1::before { animation: m-ambient 2.4s var(--m-ease) both; transition: translate .9s var(--m-ease); }
+  .m .hero-3 { animation: m-rise .8s var(--m-ease) .05s both; }
+  .m .hero-5 { --m-dist: .3em; animation: m-rise 1.1s var(--m-ease) .15s both; }
+  .m .hero-6 { animation: m-fade 1.2s ease .7s both; }               /* «ci sei tu.» arriva dopo «Prima del portiere,» */
+  .m .hero-7 { animation: m-rise .9s var(--m-ease) .9s both; }
+  .m .hero-8 { animation: m-rise .9s var(--m-ease) 1s both; }
+  .m .hero-9 { animation: m-rise .9s var(--m-ease) 1.1s both; }
+  .m .hero-14 { animation: m-fade 1s ease 1.25s both; }
+  /* Il visual entra quando è visibile: su mobile non ritarda il messaggio e non si consuma fuori schermo */
+  .m .hero-18 { transition: opacity 1.1s ease .1s, translate 1.4s var(--m-ease) .1s, scale 1.6s var(--m-ease) .1s; }
+  .m .hero-18:not(.is-in) { opacity: 0; translate: 0 28px; scale: .96; }
+  .m .hero-18:not(.is-in) :is(.hv-ring, .hv-rings, .hv-figure, .hv-path, .hv-node, .hv-light, .hv-light-glow) { animation-play-state: paused; }
+
+  /* ---- SCENA 02 · Il mondo emotivo del portiere ---- */
+  /* «Quello che non si vede.» diventa visibile: il titolo si scopre da sinistra */
+  /* (una «tenda» del colore dello sfondo che si ritira: il titolo non è mai ritagliato, l'observer lo vede sempre) */
+  .m .ruolo-4 { position: relative; }
+  .m .ruolo-4::after {
+    content: ''; position: absolute; inset: -12% -3% -28% -3%; background: #F3F1EC; pointer-events: none;
+    transform-origin: right; transition: scale 1.6s var(--m-ease-io) var(--m-d, 0s);
+  }
+  .m .ruolo-4.is-in::after { scale: 0 1; }
+  /* Le quattro scene arrivano una dopo l'altra; una linea scorre sopra come il tempo che passa */
+  .m .grid-scenes::before {
+    content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: #1E6B66;
+    transform-origin: left; transition: scale 2.2s var(--m-ease-io) calc(var(--m-d, 0s) + .2s);
+  }
+  .m .grid-scenes:not(.is-in)::before { scale: 0 1; }
+  .m .grid-scenes .scene { transition: opacity .8s ease, translate 1s var(--m-ease); }
+  .m .grid-scenes:not(.is-in) .scene { opacity: 0; translate: 0 var(--m-dist); }
+  .m .grid-scenes .scene:nth-child(2) { transition-delay: .16s; }
+  .m .grid-scenes .scene:nth-child(3) { transition-delay: .32s; }
+  .m .grid-scenes .scene:nth-child(4) { transition-delay: .48s; }
+  /* Le domande arrivano come pensieri, lentamente; l'ultima è quella che conta */
+  .m .ruolo-11 { transition: opacity .8s ease; }
+  .m .ruolo-10:not(.is-in) .ruolo-11 { opacity: 0; }
+  .m .ruolo-12 > li { transition: opacity 1s ease, translate 1.2s var(--m-ease); }
+  .m .ruolo-10:not(.is-in) .ruolo-12 > li { opacity: 0; translate: 0 14px; }
+  .m .ruolo-12 > li:nth-child(1) { transition-delay: .2s; }
+  .m .ruolo-12 > li:nth-child(2) { transition-delay: .5s; }
+  .m .ruolo-12 > li:nth-child(3) { transition-delay: .8s; }
+  .m .ruolo-12 > li:nth-child(4) { transition-delay: 1.15s; transition-duration: 1.4s, 1.5s; }
+  /* Tre storie: ogni forma si disegna in modo diverso, dal centro verso l'esterno */
+  .m .storia-8 > div { transition: opacity .9s ease, translate 1.2s var(--m-ease); }
+  .m .storia-7:not(.is-in) .storia-8 > div { opacity: 0; translate: 0 40px; }
+  .m .storia-8 > :nth-child(2) { --c: .2s; transition-delay: .15s; }
+  .m .storia-8 > :nth-child(3) { --c: .4s; transition-delay: .3s; }
+  .m .storia-10 path { stroke-dasharray: 1; transition: stroke-dashoffset 1.8s var(--m-ease-io) calc(var(--c, 0s) + .3s + var(--k, 0s)); }
+  .m .storia-7:not(.is-in) .storia-10 path { stroke-dashoffset: 1; }
+  .m .storia-10 path:nth-child(2) { --k: .1s; }
+  .m .storia-10 path:nth-child(3) { --k: .2s; }
+  .m .storia-10 path:nth-child(4) { --k: .3s; }
+  .m .storia-10 path:nth-child(5) { --k: .4s; }
+  .m .storia-10 path:nth-child(6) { --k: .5s; }
+  .m .storia-12 { transition: opacity 1s ease 1.4s; }
+  .m .storia-7:not(.is-in) .storia-12 { opacity: 0; }
+
+  /* ---- SCENA 03 · Lo spazio dell'ascolto: la luce si apre, le onde si allargano ---- */
+  .m .proposta-1::before { transition: opacity 2s ease, scale 2.6s var(--m-ease); }
+  .m .proposta-1:not(.is-in)::before { opacity: 0; scale: .55; }
+  .m .listen path { stroke-dasharray: 1; transition: stroke-dashoffset 2.4s var(--m-ease-io); }
+  .m .proposta-1:not(.is-in) .listen path { stroke-dashoffset: 1; }
+  .m .listen path:nth-child(1) { transition-delay: .2s; }
+  .m .listen path:nth-child(2) { transition-delay: .45s; }
+  .m .listen path:nth-child(3) { transition-delay: .7s; }
+  .m .listen path:nth-child(4) { transition-delay: .95s; }
+  .m .listen path:nth-child(5) { transition-delay: 1.2s; }
+  /* La frase della proposta: prima la linea, poi le parole */
+  .m .proposta-5 { border-left-color: transparent; }
+  .m .proposta-5::before {
+    content: ''; position: absolute; left: -2px; top: 0; bottom: 0; width: 2px; background: #6CC3BB;
+    transform-origin: top; transition: scale 1.2s var(--m-ease-io) var(--m-d, 0s);
+  }
+  .m .proposta-5:not(.is-in)::before { scale: 1 0; }
+  .m .proposta-6 { transition: opacity 1.2s ease calc(var(--m-d, 0s) + .35s), translate 1.3s var(--m-ease) calc(var(--m-d, 0s) + .35s); }
+  .m .proposta-5:not(.is-in) .proposta-6 { opacity: 0; translate: 0 14px; }
+  /* Ascolto → Comprensione → Orientamento: ogni passo parte dal precedente, da sinistra a destra */
+  .m .chain > li { transition: opacity .8s ease, translate 1s var(--m-ease); }
+  .m .chain:not(.is-in) > li { opacity: 0; translate: -24px 0; }
+  .m .chain > li:nth-child(2) { transition-delay: .18s; }
+  .m .chain > li:nth-child(3) { transition-delay: .36s; }
+  .m .chain .hero-13 { transition: opacity .6s ease .5s; }
+  .m .chain > li:nth-child(3) .hero-13 { transition-delay: .7s; }
+  .m .chain:not(.is-in) .hero-13 { opacity: 0; }
+
+  /* ---- SCENA 04 · I tre incontri: una linea unica che collega 01 → 02 → 03 ---- */
+  .m .m-step { border-top-color: transparent; }
+  .m .m-step::before {
+    content: ''; position: absolute; left: 0; right: 0; top: -2px; height: 2px; background: #121314;
+    transform-origin: left; transition: scale 1.1s var(--m-ease-io) var(--m-s, 0s);
+  }
+  .m .m-step:not(.is-in)::before { scale: 0 1; }
+  .m .m-step:nth-child(2) { --m-s: .55s; }
+  .m .m-step:nth-child(3) { --m-s: 1.1s; }
+  .m .m-step :is(.incontri-8, .incontri-11, .incontri-12) { transition: opacity .8s ease, translate 1s var(--m-ease); }
+  .m .m-step .incontri-8 { transition-delay: calc(var(--m-s, 0s) + .25s); }
+  .m .m-step .incontri-11 { transition-delay: calc(var(--m-s, 0s) + .4s); }
+  .m .m-step .incontri-12 { transition-delay: calc(var(--m-s, 0s) + .55s); }
+  .m .m-step:not(.is-in) :is(.incontri-8, .incontri-11, .incontri-12) { opacity: 0; translate: 0 14px; }
+  /* 01 Ascolto: cerchi che si aprono */
+  .m .g-ascolto circle { transform-box: fill-box; transform-origin: center; transition: scale 1s var(--m-ease), opacity .6s ease; }
+  .m .m-step:not(.is-in) .g-ascolto circle { scale: .2; opacity: 0; }
+  .m .g-ascolto circle:nth-child(1) { transition-delay: calc(var(--m-s, 0s) + .3s); }
+  .m .g-ascolto circle:nth-child(2) { transition-delay: calc(var(--m-s, 0s) + .45s); }
+  .m .g-ascolto circle:nth-child(3) { transition-delay: calc(var(--m-s, 0s) + .6s); }
+  .m .g-ascolto circle:nth-child(4) { transition-delay: calc(var(--m-s, 0s) + .75s); }
+  /* 02 Comprensione: punti sparsi che si organizzano, poi i collegamenti */
+  .m .g-comprensione circle { transition: translate 1s var(--m-ease) calc(var(--m-s, 0s) + .3s), opacity .5s ease calc(var(--m-s, 0s) + .3s); }
+  .m .m-step:not(.is-in) .g-n1 { translate: -8px 12px; opacity: 0; }
+  .m .m-step:not(.is-in) .g-n2 { translate: 10px -8px; opacity: 0; }
+  .m .m-step:not(.is-in) .g-n3 { translate: 12px 10px; opacity: 0; }
+  .m .m-step:not(.is-in) .g-n4 { translate: -10px 6px; opacity: 0; }
+  .m .g-link { stroke-dasharray: 1; transition: stroke-dashoffset 1.2s var(--m-ease-io) calc(var(--m-s, 0s) + .9s); }
+  .m .m-step:not(.is-in) .g-link { stroke-dashoffset: 1; }
+  /* 03 Orientamento: tre linee convergono verso un punto */
+  .m .g-orientamento path { stroke-dasharray: 1; transition: stroke-dashoffset 1.1s var(--m-ease-io); }
+  .m .m-step:not(.is-in) .g-orientamento path { stroke-dashoffset: 1; }
+  .m .g-orientamento path:nth-child(1) { transition-delay: calc(var(--m-s, 0s) + .3s); }
+  .m .g-orientamento path:nth-child(2) { transition-delay: calc(var(--m-s, 0s) + .42s); }
+  .m .g-orientamento path:nth-child(3) { transition-delay: calc(var(--m-s, 0s) + .54s); }
+  .m .g-orientamento .g-core { transform-box: fill-box; transform-origin: center; transition: scale .6s var(--m-spring) calc(var(--m-s, 0s) + 1.35s), opacity .3s ease calc(var(--m-s, 0s) + 1.35s); }
+  .m .m-step:not(.is-in) .g-orientamento .g-core { scale: 0; opacity: 0; }
+
+  /* ---- SCENA 05 · La Mappa: elementi separati che diventano chiari e collegati ---- */
+  .m .mappa-6 > li { transition: opacity .8s ease, translate 1s var(--m-ease); }
+  .m .mappa-6:not(.is-in) > li { opacity: 0; translate: 0 16px; }
+  .m .mappa-6 > li:nth-child(2) { transition-delay: .14s; }
+  .m .mappa-6 > li:nth-child(3) { transition-delay: .28s; }
+  .m .mappa-14 { transition: opacity 1s ease, translate 1.3s var(--m-ease); }
+  .m .mock:not(.is-in) .mappa-14 { opacity: 0; translate: -32px 40px; }
+  .m .mappa-20 { transition: opacity 1s ease .18s, translate 1.3s var(--m-ease) .18s, scale 1.4s var(--m-ease) .18s; }
+  .m .mock:not(.is-in) .mappa-20 { opacity: 0; translate: 0 56px; scale: .96; }
+  .m .mappa-21 { transition: opacity .6s ease .45s; }
+  .m .mock:not(.is-in) .mappa-21 { opacity: 0; }
+  .m .mappa-25 path { stroke-dasharray: 1; transition: stroke-dashoffset 1.5s var(--m-ease-io); }
+  .m .mock:not(.is-in) .mappa-25 path { stroke-dashoffset: 1; }
+  .m .mappa-25 path:nth-child(5) { transition-delay: .55s; }
+  .m .mappa-25 path:nth-child(4) { transition-delay: .7s; }
+  .m .mappa-25 path:nth-child(3) { transition-delay: .85s; }
+  .m .mappa-25 path:nth-child(2) { transition-delay: 1s; }
+  .m .mappa-25 path:nth-child(1) { transition-delay: 1.15s; }
+  .m :is(.mappa-28, .mappa-29, .mappa-30, .mappa-31, .mappa-32) { transition: opacity .8s ease, translate 1.1s var(--m-ease); }
+  .m .mock:not(.is-in) :is(.mappa-28, .mappa-29, .mappa-30, .mappa-31, .mappa-32) { opacity: 0; }
+  .m .mock:not(.is-in) .mappa-28 { translate: -16px -10px; }
+  .m .mock:not(.is-in) .mappa-29 { translate: 16px -10px; }
+  .m .mock:not(.is-in) .mappa-30 { translate: -16px 10px; }
+  .m .mock:not(.is-in) .mappa-31 { translate: 16px 10px; }
+  .m .mock:not(.is-in) .mappa-32 { translate: 0 14px; }
+  .m .mappa-28 { transition-delay: 1.1s; }
+  .m .mappa-29 { transition-delay: 1.2s; }
+  .m .mappa-30 { transition-delay: 1.3s; }
+  .m .mappa-31 { transition-delay: 1.4s; }
+  .m .mappa-32 { transition-delay: 1.5s; }
+  .m .mappa-26 { transition: scale .7s var(--m-spring) 1.85s; }
+  .m .mock:not(.is-in) .mappa-26 { scale: 0; }
+  .m .mappa-27 { transition: opacity .7s ease 2.05s; }
+  .m .mock:not(.is-in) .mappa-27 { opacity: 0; }
+  .m :is(.mappa-16, .mappa-17, .mappa-18, .mappa-19, .mappa-36, .mappa-37, .mappa-41, .mappa-43) { transform-origin: left; transition: scale .9s var(--m-ease) 2.1s; }
+  .m .mock:not(.is-in) :is(.mappa-16, .mappa-17, .mappa-18, .mappa-19, .mappa-36, .mappa-37, .mappa-41, .mappa-43) { scale: 0 1; }
+  .m :is(.mappa-17, .mappa-37, .mappa-43) { transition-delay: 2.25s; }
+  .m :is(.mappa-18, .mappa-19) { transition-delay: 2.4s; }
+  .m :is(.mappa-40, .mappa-44, .mappa-15) { transition: opacity .6s ease 2.3s; }
+  .m .mock:not(.is-in) :is(.mappa-40, .mappa-44, .mappa-15) { opacity: 0; }
+
+  /* ---- SCENA 06 · Il referente: la fotografia si rivela, poi le parole ---- */
+  .m .ref-photo { transition: clip-path 1.4s var(--m-ease-io) var(--m-d, 0s); clip-path: inset(0 0 0 0 round 22px); }
+  .m .ref-photo:not(.is-in) { clip-path: inset(100% 0 0 0 round 22px); }
+  .m .ref-photo img { transition: scale 2.2s var(--m-ease) var(--m-d, 0s); }
+  .m .ref-photo:not(.is-in) img { scale: 1.08; }
+  .m .ref-quote { border-left-color: transparent; }
+  .m .ref-quote::before {
+    content: ''; position: absolute; left: -2px; top: 0; bottom: 0; width: 2px; background: #6CC3BB;
+    transform-origin: top; transition: scale 1.1s var(--m-ease-io) calc(var(--m-d, 0s) + .3s);
+  }
+  .m .ref-quote:not(.is-in)::before { scale: 1 0; }
+
+  /* ---- SCENA 07 · Conversione: il modulo arriva per ultimo, i passaggi si accendono ---- */
+  .m .modulo-14 { transition-delay: calc(var(--m-d, 0s) + .15s); }
+  .m .modulo-14:not(.is-in) { translate: 0 48px; }
+  .m .modulo-8 .modulo-10 { transition: scale .6s var(--m-spring) calc(var(--m-d, 0s) + .3s), opacity .4s ease calc(var(--m-d, 0s) + .3s); }
+  .m .modulo-8:not(.is-in) .modulo-10 { scale: .4; opacity: 0; }
+  .m .modulo-8 li:nth-child(2) .modulo-10 { transition-delay: calc(var(--m-d, 0s) + .45s); }
+  .m .modulo-8 li:nth-child(3) .modulo-10 { transition-delay: calc(var(--m-d, 0s) + .6s); }
+
+  /* ---- Mobile: le sequenze non si allungano in attesa di elementi che stanno sotto ---- */
+  @media (max-width: 900px) { .m .m-step:nth-child(3) { --m-s: 0s; } }
+  @media (max-width: 600px) {
+    .m .m-step:nth-child(2) { --m-s: 0s; }
+    .m .chain:not(.is-in) > li { translate: 0 var(--m-dist); }
+  }
+
+  /* ---- Un elemento con il focus da tastiera è sempre pienamente visibile ---- */
+  .m :is(.reveal, .ref-body > *, .ref-bio > p, .ref-facts, .modulo-3 > *, .modulo-14):focus-within { opacity: 1 !important; translate: none !important; transition: none !important; }
+  .m .m-now, .m .m-now * { transition-duration: 0s !important; transition-delay: 0s !important; }
+}
+
+/* Schede del browser non attive: le animazioni continue si fermano */
+.is-tab-hidden :is(.hv-light-glow, .hv-rings), .is-tab-hidden .dot::after { animation-play-state: paused; }
+
+/* Stampa: tutto visibile e fermo */
+@media print {
+  .m .ruolo-4::after { display: none !important; }
+  .m *, .m *::before { opacity: 1 !important; translate: none !important; scale: none !important; clip-path: none !important; transition: none !important; animation: none !important; }
+  .m path { stroke-dashoffset: 0 !important; }
+}
