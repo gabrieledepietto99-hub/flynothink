@@ -30,15 +30,15 @@ window.FNT_SITE = Object.freeze({
     lang: 'it',
     // Script della Cookie Solution: confrontarlo con lo snippet fornito dal pannello iubenda prima dell'uso.
     csScriptUrl: 'https://cdn.iubenda.com/cs/iubenda_cs.js',
-    snippetVerificato: false              // true solo dopo il confronto con il pannello iubenda
+    snippetVerificato: true               // 19/10/2026: in uso lo script ufficiale «embeds» fornito dal pannello iubenda (index.html)
   }),
 
-  gtm: Object.freeze({ containerId: null }),      // formato GTM-XXXXXXX — DA CONFIGURARE
+  gtm: Object.freeze({ containerId: 'GTM-TM3ZR5KL' }),  // fornito da Gabriele il 19/10/2026; si carica solo dopo il consenso iubenda (finalità 4 o 5)
   clarity: Object.freeze({ projectId: null }),    // solo registro: il tag vive in GTM — DA CONFIGURARE
   metaPixel: Object.freeze({ pixelId: null }),    // solo registro: il tag vive in GTM — DA CONFIGURARE
 
   tracking: Object.freeze({
-    enabled: false,                       // interruttore generale: false = nessuno script esterno
+    enabled: true,                        // interruttore generale (19/10/2026): GTM solo dopo consenso a misurazione o marketing
     allowOnStaging: false                 // true solo per i test dei consensi in staging
   })
 });
