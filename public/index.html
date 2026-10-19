@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="facebook-domain-verification" content="7v2ovdb8w38bfngnxahgglrcr1pyu" />
-<!-- iubenda · banner e preferenze consensi (script ufficiale del pannello iubenda). Il sito funziona anche se non si carica. -->
-<script type="text/javascript" src="https://embeds.iubenda.com/widgets/9ba641eb-a175-4cab-935d-64607a7e1e82.js"></script>
+<meta name="facebook-domain-verification" content="7v2ovdb8w38bfngnxahgglrcxr1pyu" />
+<!-- iubenda · banner e preferenze consensi (script ufficiale del pannello iubenda, caricato in async: la pagina non aspetta iubenda). Il sito funziona anche se non si carica. -->
+<script type="text/javascript" src="https://embeds.iubenda.com/widgets/9ba641eb-a175-4cab-935d-64607a7e1e82.js" async></script>
 <title>FlyNoThink — Il percorso FNT</title>
 <meta name="description" content="Un percorso personale per portieri di calcio: tre incontri di ascolto, comprensione e orientamento. In progettazione: lascia la tua email per ricevere aggiornamenti.">
 <meta name="theme-color" content="#0C0D0E">
@@ -466,7 +466,8 @@
     <nav class="footer-legal" aria-label="Documenti legali">
       <a href="https://www.iubenda.com/privacy-policy/66588632" data-legal="privacy">Privacy Policy</a>
       <a href="https://www.iubenda.com/privacy-policy/66588632/cookie-policy" data-legal="cookie">Cookie Policy</a>
-      <a href="termini.html" data-legal="terms">Termini e Condizioni</a>
+      <!-- Termini e Condizioni: nascosto finché non c'è l'URL iubenda (site-config.js → legal.termsUrl). Per mostrarlo: inserire l'URL e togliere «hidden». -->
+      <a href="termini.html" data-legal="terms" hidden>Termini e Condizioni</a>
       <button type="button" class="footer-prefs" data-cookie-prefs hidden>Preferenze cookie</button>
     </nav>
     <p class="footer-4 footer-ai" id="nota-immagini" data-ai-disclosure>Le immagini di persone generate con intelligenza artificiale presenti in questa pagina sono illustrative e non rappresentano clienti o atleti seguiti da FlyNoThink. Il ritratto di Gabriele De Pietto è una fotografia autentica.</p>

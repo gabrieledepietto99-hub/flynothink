@@ -14,6 +14,9 @@ const read = (f) => readFileSync(join(root, f), 'utf8');
 const noComments = (h) => h.replace(/<!--[\s\S]*?-->/g, '');
 const problems = [];
 const add = (f, m) => problems.push(`${f}: ${m}`);
+// Da completare dopo la pubblicazione (decisione del 19/10/2026): segnalati a ogni deploy, non bloccano.
+const warnings = [];
+const warn = (f, m) => warnings.push(`${f}: ${m}`);
 
 const index = noComments(read('index.html'));
 const grazie = noComments(read('grazie.html'));
@@ -37,10 +40,11 @@ if (!/formId:\s*'?\d+'?/.test(form)) add('assets/js/config.js', 'MailerLite form
 if (/minAge:\s*null/.test(form)) add('assets/js/config.js', 'decisione sull\'età minima mancante (minAge)');
 
 // 3. Documenti legali e titolare
-for (const k of ['privacyPolicyUrl', 'cookiePolicyUrl', 'termsUrl'])
+for (const k of ['privacyPolicyUrl', 'cookiePolicyUrl'])
   if (!new RegExp(k + ":\\s*'https://").test(site)) add('assets/js/site-config.js', `legal.${k} mancante (URL iubenda)`);
+if (!/termsUrl:\s*'https:\/\//.test(site)) warn('assets/js/site-config.js', 'legal.termsUrl mancante: link «Termini e Condizioni» nascosto finché manca');
 const owner = index.match(/<p class="footer-4" data-owner-line( hidden)?>([^<]*)<\/p>/);
-if (!owner || owner[1] || owner[2].trim().length < 10) add('index.html', 'dati del titolare nel footer mancanti (riga data-owner-line)');
+if (!owner || owner[1] || owner[2].trim().length < 10) warn('index.html', 'dati del titolare nel footer mancanti (riga data-owner-line)');
 
 // 4. Tracciamento: spento, oppure con gestione consensi completa
 if (/enabled:\s*true/.test(site)) {
@@ -60,8 +64,13 @@ if (!existsSync(join(root, 'assets/social/og-image.jpg'))) add('assets/social', 
 const pending = [...index.matchAll(/data-photo-status="(?!approvata")[^"]*"/g)].length;
 if (pending) add('index.html', `${pending} fotografia/e non approvate`);
 if (/data-rights="ai-illustrativa"/.test(index) && !/data-ai-disclosure/.test(index)) add('index.html', 'dichiarazione AI mancante');
-if (/data-rights="da-confermare"/.test(index)) add('index.html', 'diritti della foto del referente da confermare (data-rights)');
+if (/data-rights="da-confermare"/.test(index)) warn('index.html', 'diritti della foto del referente da confermare (data-rights)');
 
+if (warnings.length) {
+  console.warn(`\n⚠ Da completare (non bloccano la pubblicazione) — ${warnings.length}:\n`);
+  for (const w of warnings) console.warn('  • ' + w);
+  console.warn('');
+}
 // Su Vercel il blocco vale solo per la produzione: le anteprime (rami diversi da main) si pubblicano
 // su un indirizzo *.vercel.app che Vercel esclude dai motori di ricerca.
 const vercelEnv = process.env.VERCEL_ENV;
