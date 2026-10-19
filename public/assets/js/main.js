@@ -58,6 +58,7 @@
     body.append('fields[name]', nome);
     body.append('ml-submit', '1');
     body.append('anticsrf', 'true');
+    body.append('ajax', '1');
     var controller = 'AbortController' in window ? new AbortController() : null;
     var timer = controller ? setTimeout(function () { controller.abort(); }, config.requestTimeoutMs || 12000) : null;
     return fetch(url, { method: 'POST', body: body, headers: { 'Accept': 'application/json' }, signal: controller ? controller.signal : undefined })

@@ -11,8 +11,9 @@
 window.FNT_CONFIG = Object.freeze({
   provider: 'mailerlite',
   mailerlite: Object.freeze({
-    accountId: null,         // DA FORNIRE (numero)
-    formId: null             // DA FORNIRE (numero)
+    // Tra virgolette di proposito: il formId ha 18 cifre e come numero JavaScript perderebbe le ultime cifre.
+    accountId: '2722839',
+    formId: '201751821070370540'      // modulo embedded «FNT Landing», gruppo «FNT · Lista d'attesa», double opt-in attivo
   }),
   successUrl: 'grazie.html',
   requestTimeoutMs: 12000,
