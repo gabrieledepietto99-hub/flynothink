@@ -32,8 +32,8 @@ const brackets = [...text.matchAll(/\[[^\]\n]{3,}\]/g)].map((m) => m[0]);
 if (brackets.length) add('index.html', `testi tra parentesi quadre: ${brackets.slice(0, 3).join(' · ')}`);
 
 // 2. Modulo MailerLite
-if (!/accountId:\s*\d+/.test(form)) add('assets/js/config.js', 'MailerLite accountId mancante');
-if (!/formId:\s*\d+/.test(form)) add('assets/js/config.js', 'MailerLite formId mancante');
+if (!/accountId:\s*'?\d+'?/.test(form)) add('assets/js/config.js', 'MailerLite accountId mancante');
+if (!/formId:\s*'?\d+'?/.test(form)) add('assets/js/config.js', 'MailerLite formId mancante');
 if (/minAge:\s*null/.test(form)) add('assets/js/config.js', 'decisione sull\'età minima mancante (minAge)');
 
 // 3. Documenti legali e titolare
