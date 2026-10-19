@@ -76,3 +76,16 @@
 .storia-6 br { display: none; }                      /* l'a capo forzato lasciava «qualcosa,» da solo */
 /* Paragrafi e domande: niente parola sola sull'ultima riga, dove il browser lo supporta */
 :is(.proposta-6, .ruolo-12 li, main p) { text-wrap: pretty; }
+
+/* ── 10 · Età minima (decisione del 19/10/2026: solo maggiorenni). Casella obbligatoria, non preselezionata. */
+.eta { display: grid; grid-template-columns: 22px 1fr; column-gap: 12px; align-items: center; }
+.eta-box { appearance: none; -webkit-appearance: none; width: 22px; height: 22px; margin: 0; border: 1.5px solid #8A8D8B;
+  border-radius: 6px; background: #FFFFFF; display: grid; place-content: center; cursor: pointer; }
+.eta-box::after { content: ''; width: 11px; height: 6px; border: solid #F3F1EC; border-width: 0 0 2px 2px;
+  transform: translateY(-1px) rotate(-45deg); opacity: 0; }
+.eta-box:checked { background: #0C0D0E; border-color: #0C0D0E; }
+.eta-box:checked::after { opacity: 1; }
+.eta-box:focus-visible { outline: 2px solid #1E6B66; outline-offset: 2px; }
+.eta-box[aria-invalid="true"] { border-color: #B4432E; }
+.eta-label { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 500; color: #121314; cursor: pointer; padding: 10px 0; }
+.eta > div { grid-column: 1 / -1; }

@@ -18,5 +18,5 @@ window.FNT_CONFIG = Object.freeze({
   successUrl: 'grazie.html',
   requestTimeoutMs: 12000,
   // Decisione sull'età minima per iscriversi (es. 14). Finché è null la pubblicazione resta bloccata.
-  minAge: null
+  minAge: 18          // deciso il 19/10/2026: per ora il percorso non è rivolto ai minorenni
 });

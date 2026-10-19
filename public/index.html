@@ -400,7 +400,7 @@
       <div class="light modulo-14">
         <!-- MODULO ISCRIZIONE · invio a MailerLite (assets/js/config.js). Nessun dato salvato su questo sito. -->
         <form class="modulo-17" id="lead-form" method="post" novalidate aria-describedby="f-help" data-state="idle">
-          <p class="modulo-18" id="f-help">Entrambi i campi sono obbligatori.</p>
+          <p class="modulo-18" id="f-help">Tutti i campi sono obbligatori.</p>
           <div class="hp" aria-hidden="true"><label for="f-sito">Lascia vuoto questo campo</label><input id="f-sito" name="sito" type="text" tabindex="-1" autocomplete="off"></div>
           <div>
             <label class="modulo-19" for="f-nome">Nome</label>
@@ -413,6 +413,13 @@
             <label class="modulo-19" for="f-email">Email</label>
             <input id="f-email" name="email" class="field" type="email" inputmode="email" autocomplete="email" spellcheck="false" placeholder="nome@email.it" required aria-required="true" aria-invalid="false" aria-describedby="e-email" maxlength="254">
             <div id="e-email" aria-live="polite">
+              <p class="field-error modulo-20" hidden><svg class="modulo-21" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.5"></circle><path d="M8 4.5v4M8 11v.5"></path></svg><span data-error-text></span></p>
+            </div>
+          </div>
+          <div class="eta">
+            <input id="f-eta" name="eta" class="eta-box" type="checkbox" required aria-required="true" aria-invalid="false" aria-describedby="e-eta">
+            <label class="eta-label" for="f-eta">Ho almeno 18 anni</label>
+            <div id="e-eta" aria-live="polite">
               <p class="field-error modulo-20" hidden><svg class="modulo-21" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.5"></circle><path d="M8 4.5v4M8 11v.5"></path></svg><span data-error-text></span></p>
             </div>
           </div>

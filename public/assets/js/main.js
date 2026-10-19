@@ -15,6 +15,7 @@
   var nameInput = form.querySelector('#f-nome');
   var emailInput = form.querySelector('#f-email');
   var trap = form.querySelector('#f-sito');
+  var ageBox = form.querySelector('#f-eta');
   var submitBtn = form.querySelector('[data-submit]');
   var submitLabel = form.querySelector('[data-submit-label]');
   var spinner = form.querySelector('[data-spinner]');
@@ -36,10 +37,11 @@
     p.querySelector('[data-error-text]').textContent = message;
     p.hidden = !message;
   }
+  function validateAge() { return ageBox && !ageBox.checked ? 'Per iscriverti devi avere almeno ' + (config.minAge || 18) + ' anni.' : ''; }
   function validateAll() {
-    var a = validateName(nameInput.value), b = validateEmail(emailInput.value);
-    setFieldError(nameInput, a); setFieldError(emailInput, b);
-    return { ok: !a && !b, firstInvalid: a ? nameInput : (b ? emailInput : null) };
+    var a = validateName(nameInput.value), b = validateEmail(emailInput.value), c = validateAge();
+    setFieldError(nameInput, a); setFieldError(emailInput, b); if (ageBox) setFieldError(ageBox, c);
+    return { ok: !a && !b && !c, firstInvalid: a ? nameInput : (b ? emailInput : (c ? ageBox : null)) };
   }
   function setState(s) { form.setAttribute('data-state', s); }
   function setBusy(b) {
@@ -86,6 +88,7 @@
   [nameInput, emailInput].forEach(function (input) {
     input.addEventListener('input', function () { if (touched) validateAll(); });
   });
+  if (ageBox) ageBox.addEventListener('change', function () { if (touched) validateAll(); });
 
   submitBtn.disabled = false;   // nasce disabilitato: attivo solo con JavaScript
 })();
