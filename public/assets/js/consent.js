@@ -31,7 +31,8 @@
   need(C.env === 'production' || tr.allowOnStaging === true, 'ambiente di staging senza allowOnStaging');
   need(/^\d+$/.test(String(iub.siteId)), 'iubenda.siteId mancante');
   need(/^\d+$/.test(String(iub.cookiePolicyId)), 'iubenda.cookiePolicyId mancante');
-  need(iub.snippetVerificato === true, 'snippet iubenda non verificato');
+  var embeds = !!d.querySelector('script[src*="embeds.iubenda.com"]');   // script ufficiale del pannello iubenda nel <head>
+  need(iub.snippetVerificato === true || embeds, 'snippet iubenda non verificato');
   need(/^GTM-[A-Z0-9]{4,12}$/.test(String(gtm.containerId)), 'gtm.containerId mancante o non valido');
   status.configured = status.reasons.length === 0;
 
@@ -64,7 +65,7 @@
   /* 4 · Google Consent Mode: tutto negato prima di qualsiasi tag */
   w.dataLayer = w.dataLayer || [];
   var gtag = function () { w.dataLayer.push(arguments); };
-  gtag('consent', 'default', {
+  if (!embeds) gtag('consent', 'default', {
     ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
     analytics_storage: 'denied', functionality_storage: 'denied', personalization_storage: 'denied',
     security_storage: 'granted'
@@ -96,10 +97,28 @@
     if (measurement || marketing) loadGTM();   // nessun consenso → GTM non viene caricato
   };
 
-  /* 5 · iubenda Cookie Solution (unico script esterno prima della scelta).
-     ATTENZIONE: index.html carica già iubenda con lo script «embeds». Prima di attivare il tracciamento va scelto
-     un solo metodo (consigliato: collegare onPreference agli eventi dello script embeds) per non avere due copie. */
-  if (d.querySelector('script[src*="embeds.iubenda.com"]')) return;
+  /* 5a · Script «embeds» di iubenda (metodo in uso). iubenda gestisce banner e Google Consent Mode («denied» di default);
+     qui si legge la scelta registrata con l'API ufficiale (_iub.cs.api.getPreferences) e GTM si carica solo con
+     finalità 4 (misurazione) o 5 (marketing) = true. Ad ogni cambio di scelta si invia un «consent update» coerente
+     con le finalità: l'ultimo aggiornamento prevale. Con le sole finalità «Necessari» GTM non viene mai caricato. */
+  if (embeds) {
+    var last = null;
+    var check = function () {
+      var api = w._iub && w._iub.cs && w._iub.cs.api;
+      if (!api || typeof api.getPreferences !== 'function') return;
+      var pref = api.getPreferences();
+      if (!pref || !pref.purposes) return;                // nessuna scelta ancora espressa
+      var key = JSON.stringify(pref.purposes);
+      if (key === last) return;
+      last = key;
+      onPreference({ purposes: pref.purposes });
+    };
+    setInterval(check, 1000);                             // copre prima scelta, modifica e revoca senza ricaricare
+    if (d.readyState === 'complete') check(); else w.addEventListener('load', check);
+    return;
+  }
+
+  /* 5b · Metodo alternativo (non in uso): Cookie Solution caricata da questo file. */
   w._iub = w._iub || [];
   w._iub.csConfiguration = {
     siteId: Number(iub.siteId),
