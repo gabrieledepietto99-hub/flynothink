@@ -6,7 +6,9 @@
       di ascolto, luce dell'hero che segue il puntatore. Mai su touch, mai con movimento ridotto.
    Senza JavaScript, senza IntersectionObserver o con movimento ridotto la classe .m non
    esiste e la pagina resta statica e completa. Se questo file non si carica, lo script nel
-   <head> rimuove .m dopo 2,5 s: nessun contenuto resta nascosto. */
+   <head> rimuove .m al termine del caricamento della pagina (evento load, massimo 12 s): nessun contenuto
+   resta nascosto. R4.1: prima il limite era fisso a 2,5 s e sulle connessioni mobili lente disattivava
+   tutte le animazioni anche quando questo file arrivava regolarmente. */
 (function () {
   'use strict';
   var d = document, h = d.documentElement, w = window;

@@ -4,7 +4,7 @@
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
   Header always set X-Frame-Options "SAMEORIGIN"
-  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'sha256-3hP6nchPpqPZYMRaarLlzlsqeIFG9CWac3iaX+5BCvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://assets.mailerlite.com; form-action 'self' https://assets.mailerlite.com; base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'sha256-c8psLLOUwXkyphqW0iwgZcKDA4HDmG4jpIXqSmgU+Hk='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://assets.mailerlite.com; form-action 'self' https://assets.mailerlite.com; base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
   <FilesMatch "^(grazie|privacy|cookie|termini)\.html$">
     Header set X-Robots-Tag "noindex, nofollow"
   </FilesMatch>
