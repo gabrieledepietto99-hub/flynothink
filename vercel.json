@@ -26,7 +26,7 @@
         },
         {
           "key": "Content-Security-Policy-Report-Only",
-          "value": "default-src 'self'; script-src 'self' 'sha256-c8psLLOUwXkyphqW0iwgZcKDA4HDmG4jpIXqSmgU+Hk='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://assets.mailerlite.com; form-action 'self' https://assets.mailerlite.com; base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
+          "value": "default-src 'self'; script-src 'self' https://*.iubenda.com 'sha256-c8psLLOUwXkyphqW0iwgZcKDA4HDmG4jpIXqSmgU+Hk='; style-src 'self' 'unsafe-inline' https://*.iubenda.com; img-src 'self' data: https://*.iubenda.com; font-src 'self'; connect-src 'self' https://assets.mailerlite.com https://*.iubenda.com; form-action 'self' https://assets.mailerlite.com; frame-src https://*.iubenda.com; base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
         }
       ]
     },
@@ -87,6 +87,26 @@
       ],
       "destination": "https://flynothink.it/:path*",
       "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "destination": "https://www.iubenda.com/privacy-policy/66588632",
+      "permanent": false
+    },
+    {
+      "source": "/privacy.html",
+      "destination": "https://www.iubenda.com/privacy-policy/66588632",
+      "permanent": false
+    },
+    {
+      "source": "/cookie",
+      "destination": "https://www.iubenda.com/privacy-policy/66588632/cookie-policy",
+      "permanent": false
+    },
+    {
+      "source": "/cookie.html",
+      "destination": "https://www.iubenda.com/privacy-policy/66588632/cookie-policy",
+      "permanent": false
     }
   ]
 }

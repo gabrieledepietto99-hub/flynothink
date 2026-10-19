@@ -17,14 +17,16 @@ window.FNT_SITE = Object.freeze({
 
   legal: Object.freeze({
     // URL dei documenti forniti da iubenda. Finché sono null, i link puntano alle pagine segnaposto locali.
-    privacyPolicyUrl: null,               // es. fornito da iubenda — DA CONFIGURARE
-    cookiePolicyUrl: null,                // DA CONFIGURARE
+    privacyPolicyUrl: 'https://www.iubenda.com/privacy-policy/66588632',
+    cookiePolicyUrl: 'https://www.iubenda.com/privacy-policy/66588632/cookie-policy',
     termsUrl: null                        // DA CONFIGURARE
   }),
 
+  // iubenda è caricato dallo script ufficiale «embeds» nel <head> di index.html (banner + preferenze).
+  // I dati qui sotto sono solo registro: consent.js NON carica una seconda copia finché tracking.enabled è false.
   iubenda: Object.freeze({
-    siteId: null,                         // numero fornito da iubenda — DA CONFIGURARE
-    cookiePolicyId: null,                 // numero fornito da iubenda — DA CONFIGURARE
+    siteId: 4724834,                      // dal widget iubenda 9ba641eb-…
+    cookiePolicyId: 66588632,
     lang: 'it',
     // Script della Cookie Solution: confrontarlo con lo snippet fornito dal pannello iubenda prima dell'uso.
     csScriptUrl: 'https://cdn.iubenda.com/cs/iubenda_cs.js',

@@ -45,7 +45,18 @@
     });
   });
 
-  if (!status.configured) return;            // ← senza gestione consensi configurata il file si ferma qui (nessun tracciamento).
+  /* «Preferenze cookie» nel footer: visibile solo se la Cookie Solution di iubenda (script «embeds» nel <head>)
+     è davvero caricata e ne espone l'API ufficiale. Se iubenda non si carica, il pulsante resta nascosto. */
+  var showPrefsIfIubenda = function (tries) {
+    var api = w._iub && w._iub.cs && w._iub.cs.api;
+    if (api && typeof api.openPreferences === 'function') {
+      status.iubendaLoaded = true;
+      Array.prototype.forEach.call(d.querySelectorAll('[data-cookie-prefs]'), function (btn) { btn.hidden = false; });
+    } else if (tries > 0) { setTimeout(function () { showPrefsIfIubenda(tries - 1); }, 500); }
+  };
+  if (d.readyState === 'complete') showPrefsIfIubenda(20); else w.addEventListener('load', function () { showPrefsIfIubenda(20); });
+
+  if (!status.configured) return;            // ← senza tracciamento configurato il file si ferma qui: nessun GTM, Clarity o Meta Pixel.
 
   /* «Preferenze cookie» compare solo quando esiste davvero una gestione dei consensi */
   Array.prototype.forEach.call(d.querySelectorAll('[data-cookie-prefs]'), function (btn) { btn.hidden = false; });
@@ -85,7 +96,10 @@
     if (measurement || marketing) loadGTM();   // nessun consenso → GTM non viene caricato
   };
 
-  /* 5 · iubenda Cookie Solution (unico script esterno prima della scelta) */
+  /* 5 · iubenda Cookie Solution (unico script esterno prima della scelta).
+     ATTENZIONE: index.html carica già iubenda con lo script «embeds». Prima di attivare il tracciamento va scelto
+     un solo metodo (consigliato: collegare onPreference agli eventi dello script embeds) per non avere due copie. */
+  if (d.querySelector('script[src*="embeds.iubenda.com"]')) return;
   w._iub = w._iub || [];
   w._iub.csConfiguration = {
     siteId: Number(iub.siteId),
