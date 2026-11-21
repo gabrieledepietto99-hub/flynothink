@@ -30,8 +30,27 @@
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.remove('pre'); io.unobserve(e.target); } });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
     Array.prototype.forEach.call(d.querySelectorAll('.rv'), function (el) {
-      if (el.getBoundingClientRect().top > w.innerHeight) { el.classList.add('pre'); io.observe(el); }
+      if (el.getBoundingClientRect().top > w.innerHeight) {
+        // elementi fratelli (liste, pilastri, schede, FAQ) entrano in sequenza, non tutti insieme
+        var sib = Array.prototype.filter.call(el.parentNode.children, function (s) { return s.classList && s.classList.contains('rv'); });
+        var i = sib.indexOf(el); if (i > 0) el.style.transitionDelay = Math.min(i, 5) * 70 + 'ms';
+        el.classList.add('pre'); io.observe(el);
+      }
     });
+
+    /* parallasse leggero sulla fascia fotografica: la foto scorre più lenta della pagina */
+    var bands = Array.prototype.slice.call(d.querySelectorAll('[data-parallax] img'));
+    var ticking = false;
+    var para = function () {
+      ticking = false;
+      bands.forEach(function (img) {
+        var r = img.parentNode.parentNode.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > w.innerHeight) return;
+        var p = (r.top + r.height / 2 - w.innerHeight / 2) / (w.innerHeight + r.height);   // da -0,5 a 0,5
+        img.style.transform = 'translate3d(0,' + (p * -14).toFixed(2) + '%,0)';
+      });
+    };
+    if (bands.length) { w.addEventListener('scroll', function () { if (!ticking) { ticking = true; w.requestAnimationFrame(para); } }, { passive: true }); para(); }
   }
 
   /* ---- modulo ---- */

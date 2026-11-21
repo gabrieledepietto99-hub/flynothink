@@ -82,10 +82,10 @@ h1,h2,h3{margin:0;font-weight:600;font-family:"Space Grotesk",system-ui,sans-ser
 
 /* ---------- 01 hero: foto in alto come sfondo, sfuma nel fondo; il testo sta tutto sul fondo pieno ---------- */
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;background:var(--ink);color:var(--on-ink);overflow:hidden;isolation:isolate}
-.hero-photo{position:absolute;left:0;right:0;top:0;height:72%;z-index:-2;display:block}
+.hero-photo{position:absolute;left:0;right:0;top:0;height:70%;z-index:-2;display:block;overflow:hidden}
 .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 8%;filter:saturate(.92) brightness(.9)}
 /* dissolvenza «a curva» sulla metà bassa della foto: nessuna linea tra foto e fondo */
-.hero-photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:55%;background:linear-gradient(180deg,rgba(7,10,18,0) 0.0%,rgba(7,10,18,0.013) 6.7%,rgba(7,10,18,0.049) 13.3%,rgba(7,10,18,0.104) 20.0%,rgba(7,10,18,0.175) 26.7%,rgba(7,10,18,0.259) 33.3%,rgba(7,10,18,0.352) 40.0%,rgba(7,10,18,0.45) 46.7%,rgba(7,10,18,0.55) 53.3%,rgba(7,10,18,0.648) 60.0%,rgba(7,10,18,0.741) 66.7%,rgba(7,10,18,0.825) 73.3%,rgba(7,10,18,0.896) 80.0%,rgba(7,10,18,0.951) 86.7%,rgba(7,10,18,0.987) 93.3%,rgba(7,10,18,1) 100.0%)}
+.hero-photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:64%;background:linear-gradient(180deg,rgba(7,10,18,0) 0.0%,rgba(7,10,18,0.013) 6.7%,rgba(7,10,18,0.049) 13.3%,rgba(7,10,18,0.104) 20.0%,rgba(7,10,18,0.175) 26.7%,rgba(7,10,18,0.259) 33.3%,rgba(7,10,18,0.352) 40.0%,rgba(7,10,18,0.45) 46.7%,rgba(7,10,18,0.55) 53.3%,rgba(7,10,18,0.648) 60.0%,rgba(7,10,18,0.741) 66.7%,rgba(7,10,18,0.825) 73.3%,rgba(7,10,18,0.896) 80.0%,rgba(7,10,18,0.951) 86.7%,rgba(7,10,18,0.987) 93.3%,rgba(7,10,18,1) 100.0%)}
 .hero::after{content:"";position:absolute;inset:0 0 auto 0;height:150px;z-index:-1;background:linear-gradient(180deg,rgba(7,10,18,.6),rgba(7,10,18,0))}
 .ai-tag{position:absolute;right:var(--gutter);top:80px;z-index:2;font-size:12px;color:var(--on-ink);background:rgba(7,10,18,.6);padding:5px 10px;border-radius:6px}
 .hero-in{position:relative;padding-top:120px;padding-bottom:clamp(40px,7vh,80px)}
@@ -130,11 +130,17 @@ h1,h2,h3{margin:0;font-weight:600;font-family:"Space Grotesk",system-ui,sans-ser
 .sec-nasce p:not(.eyebrow):not(.statement){color:rgba(244,246,251,.86)}
 .sec-nasce .lead{color:var(--on-ink)}
 .sec-nasce p+p{margin-top:16px}
-/* fascia fotografica a tutta larghezza */
-.band{position:relative;margin:0;height:clamp(320px,62vh,640px);background:var(--ink);overflow:hidden}
-.band img{width:100%;height:100%;object-fit:cover;object-position:62% 35%}
-.band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(244,246,251,0) 70%,rgba(7,10,18,.55) 100%)}
-.band-tag{top:auto;bottom:16px;z-index:2}
+/* fascia fotografica a tutta larghezza: alta, scura ai bordi, con leggero parallasse */
+.band{position:relative;margin:0;height:clamp(420px,84vh,860px);background:var(--ink);overflow:hidden;isolation:isolate}
+.band picture{position:absolute;inset:-9% 0;display:block}
+.band img{width:100%;height:100%;object-fit:cover;object-position:40% 12%;will-change:transform}
+.band::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  linear-gradient(180deg,rgba(7,10,18,.45) 0%,rgba(7,10,18,0) 22%),
+  linear-gradient(0deg,var(--ink) 0%,rgba(7,10,18,.55) 18%,rgba(7,10,18,0) 42%),
+  radial-gradient(120% 90% at 40% 40%,rgba(7,10,18,0) 55%,rgba(7,10,18,.55) 100%)}
+.band-cap{position:absolute;z-index:2;left:max(var(--gutter),calc((100% - var(--wrap))/2 + var(--gutter)));bottom:clamp(22px,4vw,44px);color:var(--on-ink);font-size:15px;display:flex;gap:14px;align-items:baseline}
+.band-cap span{font-family:"Space Grotesk",sans-serif;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-soft)}
+@media (max-width:767px){.band{height:64svh;min-height:420px}.band img{object-position:14% 20%}.band-cap{flex-direction:column;gap:4px;right:var(--gutter)}}
 .sec-head{max-width:820px;margin-bottom:clamp(36px,5vw,64px)}
 
 /* 02 */
@@ -187,7 +193,7 @@ h1,h2,h3{margin:0;font-weight:600;font-family:"Space Grotesk",system-ui,sans-ser
 .who-photo{margin:0;border-radius:var(--radius);overflow:hidden;max-width:360px;background:var(--mist)}
 .who-photo img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
 .who-name{font-size:26px;font-weight:600;letter-spacing:-.02em}
-.who-role{color:var(--text);font-weight:500;margin:6px 0 22px;opacity:.78}
+.who-role{color:#2B3346;font-weight:500;margin:6px 0 22px}
 .who-text p+p{margin-top:16px}
 .who-text p:not(.who-name):not(.who-role):not(.who-vision){color:var(--muted);max-width:60ch}
 .who-vision{font-weight:600;padding-top:22px;border-top:1px solid var(--line);margin-top:26px!important}
@@ -254,7 +260,18 @@ h1,h2,h3{margin:0;font-weight:600;font-family:"Space Grotesk",system-ui,sans-ser
 .foot-small p{padding-top:24px;border-top:1px solid var(--ink-line)}
 .foot-small p{font-size:13px;color:var(--on-ink-muted)}
 
-/* ---------- movimento (solo con JS e senza «riduci movimento») ---------- */
+/* ---------- movimento (solo senza «riduci movimento») ---------- */
+@media (prefers-reduced-motion:no-preference){
+  /* hero: la foto entra con un lento avvicinamento, il testo sale in sequenza (solo CSS: senza JS resta tutto visibile) */
+  .hero-photo img{animation:heroZoom 2.4s cubic-bezier(.16,.84,.3,1) both}
+  .hero-eyebrow,.hero-title,.hero-side{animation:heroUp .9s cubic-bezier(.2,.7,.2,1) both}
+  .hero-title{animation-delay:.12s}
+  .hero-side{animation-delay:.28s}
+  .ai-tag{animation:fadeIn .6s .9s both}
+  @keyframes heroZoom{from{transform:scale(1.08)}to{transform:none}}
+  @keyframes heroUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+}
 .js-motion .rv.pre{opacity:0;transform:translateY(22px)}
 .js-motion .rv{transition:opacity .8s var(--ease),transform .8s var(--ease)}
 @media (prefers-reduced-motion:reduce){.js-motion .rv.pre{opacity:1;transform:none}}
