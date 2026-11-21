@@ -8,7 +8,18 @@
 
   /* ---- barra di navigazione: fondo pieno appena si lascia l'hero ---- */
   var nav = d.querySelector('[data-nav]');
-  var onScroll = function () { if (nav) nav.classList.toggle('is-solid', w.scrollY > 40); };
+  var themed = Array.prototype.slice.call(d.querySelectorAll('[data-theme]'));
+  var links = Array.prototype.slice.call(d.querySelectorAll('.nav-links a[data-sec]'));
+  var onScroll = function () {
+    if (!nav) return;
+    nav.classList.toggle('is-solid', w.scrollY > 40);
+    // la barra prende il tema della sezione che le passa sotto (chiara su fondo chiaro, scura su fondo scuro)
+    var y = nav.offsetHeight / 2, cur = null;
+    for (var i = 0; i < themed.length; i++) { var r = themed[i].getBoundingClientRect(); if (r.top <= y && r.bottom > y) { cur = themed[i]; break; } }
+    nav.classList.toggle('is-light', !!cur && cur.getAttribute('data-theme') === 'light' && w.scrollY > 40);
+    var id = cur && cur.id;
+    links.forEach(function (a) { if (id && a.getAttribute('data-sec').split(' ').indexOf(id) > -1) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+  };
   w.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   /* ---- comparsa: si nascondono solo gli elementi ancora sotto la piega, e solo se l'osservatore esiste ---- */
