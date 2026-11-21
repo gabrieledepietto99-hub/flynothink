@@ -42,6 +42,11 @@ h1,h2,h3{margin:0;font-weight:600;font-family:"Space Grotesk",system-ui,sans-ser
 .sec-ink .soft{color:var(--on-ink-muted)}
 .lead{font-size:clamp(19px,2.1vw,23px);line-height:1.5;margin-top:28px;max-width:44ch}
 .body-dim{color:var(--muted);margin-top:26px}
+.manca{margin-top:40px;font-size:18px;color:var(--muted)}
+.manca strong{color:var(--blue-ink);font-weight:600}
+.soli{margin-top:56px;font-family:"Space Grotesk",system-ui,sans-serif;font-size:clamp(26px,3.2vw,40px);line-height:1.15;letter-spacing:-.025em;display:flex;flex-wrap:wrap;column-gap:.35em;row-gap:4px}
+.soli strong{flex-basis:100%;font-weight:600;color:var(--text)}
+.soli span{color:var(--muted);font-weight:500}
 .statement{font-size:clamp(22px,2.8vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.25;margin-top:48px}
 
 /* ---------- pulsanti ---------- */
