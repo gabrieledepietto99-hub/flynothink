@@ -19,9 +19,9 @@ window.FNT_CONFIG = Object.freeze({
   }),
   // FNT 4.0 (anteprima, 21/11/2026): invio spento finché i campi qui sopra non esistono in MailerLite
   // e non è validato il percorso per i minorenni. Con false il modulo verifica i dati ma non invia nulla.
-  submitEnabled: false,
+  submitEnabled: true,   // 21/11/2026: produzione, solo 18+ (fasce sotto i 18 nascoste finché la privacy non copre i minori)
   successUrl: 'grazie.html',
   requestTimeoutMs: 12000,
-  minAge: 12,              // FNT 4.0: target da 12 anni (ipotesi di lavoro)
+  minAge: 18,              // 21/11/2026: iscrizione solo 18+ in produzione
   parentUnder: 14          // sotto i 14 anni il modulo lo compila un genitore o tutore (da validare)
 });
