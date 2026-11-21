@@ -13,10 +13,15 @@ window.FNT_CONFIG = Object.freeze({
   mailerlite: Object.freeze({
     // Tra virgolette di proposito: il formId ha 18 cifre e come numero JavaScript perderebbe le ultime cifre.
     accountId: '2722839',
-    formId: '201751821070370540'      // modulo embedded «FNT Landing», gruppo «FNT · Lista d'attesa», double opt-in attivo
+    formId: '201751821070370540',     // modulo embedded «FNT Landing», gruppo «FNT · Lista d'attesa», double opt-in attivo
+    // Nomi dei campi personalizzati in MailerLite (Subscribers → Fields). null = campo non ancora creato: non viene inviato.
+    fields: Object.freeze({ fasciaEta: null, interesse: null, compilatoDa: null, promo: null })
   }),
+  // FNT 4.0 (anteprima, 21/11/2026): invio spento finché i campi qui sopra non esistono in MailerLite
+  // e non è validato il percorso per i minorenni. Con false il modulo verifica i dati ma non invia nulla.
+  submitEnabled: false,
   successUrl: 'grazie.html',
   requestTimeoutMs: 12000,
-  // Decisione sull'età minima per iscriversi (es. 14). Finché è null la pubblicazione resta bloccata.
-  minAge: 18          // deciso il 19/10/2026: per ora il percorso non è rivolto ai minorenni
+  minAge: 12,              // FNT 4.0: target da 12 anni (ipotesi di lavoro)
+  parentUnder: 14          // sotto i 14 anni il modulo lo compila un genitore o tutore (da validare)
 });

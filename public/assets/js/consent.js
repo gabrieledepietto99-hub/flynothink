@@ -59,8 +59,7 @@
 
   if (!status.configured) return;            // ← senza tracciamento configurato il file si ferma qui: nessun GTM, Clarity o Meta Pixel.
 
-  /* «Preferenze cookie» compare solo quando esiste davvero una gestione dei consensi */
-  Array.prototype.forEach.call(d.querySelectorAll('[data-cookie-prefs]'), function (btn) { btn.hidden = false; });
+  /* «Preferenze cookie»: lo mostra solo showPrefsIfIubenda, quando l'API iubenda è davvero caricata */
 
   /* 4 · Google Consent Mode: tutto negato prima di qualsiasi tag */
   w.dataLayer = w.dataLayer || [];

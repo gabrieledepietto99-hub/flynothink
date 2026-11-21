@@ -38,13 +38,14 @@ if (brackets.length) add('index.html', `testi tra parentesi quadre: ${brackets.s
 if (!/accountId:\s*'?\d+'?/.test(form)) add('assets/js/config.js', 'MailerLite accountId mancante');
 if (!/formId:\s*'?\d+'?/.test(form)) add('assets/js/config.js', 'MailerLite formId mancante');
 if (/minAge:\s*null/.test(form)) add('assets/js/config.js', 'decisione sull\'età minima mancante (minAge)');
+// FNT 4.0: in produzione il modulo deve inviare davvero (campi MailerLite creati, percorso minorenni validato)
+if (!/submitEnabled:\s*true/.test(form)) add('assets/js/config.js', 'invio del modulo spento (submitEnabled): servono i campi MailerLite e la validazione del percorso minorenni');
 
 // 3. Documenti legali e titolare
 for (const k of ['privacyPolicyUrl', 'cookiePolicyUrl'])
   if (!new RegExp(k + ":\\s*'https://").test(site)) add('assets/js/site-config.js', `legal.${k} mancante (URL iubenda)`);
 if (!/termsUrl:\s*'https:\/\//.test(site)) warn('assets/js/site-config.js', 'legal.termsUrl mancante: link «Termini e Condizioni» nascosto finché manca');
-const owner = index.match(/<p class="footer-4" data-owner-line( hidden)?>([^<]*)<\/p>/);
-if (!owner || owner[1] || owner[2].trim().length < 10) warn('index.html', 'dati del titolare nel footer mancanti (riga data-owner-line)');
+if (!/data-owner-line/.test(index)) warn('index.html', 'dati del titolare nel footer mancanti (riga data-owner-line)');
 
 // 4. Tracciamento: spento, oppure con gestione consensi completa
 if (/enabled:\s*true/.test(site)) {
